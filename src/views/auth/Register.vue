@@ -29,14 +29,12 @@
   </template>
 <script>
 import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import Swal from 'sweetalert2'
 
 export default {
   name: 'RegisterPage',
   setup() {
-    const router = useRouter()
     const auth = useAuthStore()
     const form = reactive({
       name: '',
@@ -54,7 +52,7 @@ export default {
             text: 'Please login to continue.',
             confirmButtonText: 'OK'
             })
-            router.push('/login')
+          
         } catch (err) {
             Swal.fire({
             icon: 'error',

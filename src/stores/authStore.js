@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
     async register(userData) {
       const response = await registerUser(userData)
       this.token = response.data.data.token
+      console.log('Token:', this.token)
       localStorage.setItem('token', this.token)
 
       this.setTokenHeader()

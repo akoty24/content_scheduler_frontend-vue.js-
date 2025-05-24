@@ -60,8 +60,7 @@
               </span>
             </td>
             <td>
-              <button class="action-btn edit">Edit</button>
-              <button class="action-btn delete">Delete</button>
+              <button class="action-btn delete" @click="deletePost(post.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -80,13 +79,15 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePlatformStore } from '@/stores/platformStore'
 import { useAuthStore } from '@/stores/authStore'
+import Swal from 'sweetalert2'
+import { useHomeStore } from '@/stores/homeStore'
 
 const platformStore = usePlatformStore()
 const authStore = useAuthStore()
 const loading = ref(true)
 const platformName = ref('')
 const route = useRoute()
-
+const home = useHomeStore()
 const search = ref('')
 const sortKey = ref('title')
 const sortOrder = ref(1)
@@ -138,6 +139,38 @@ const paginatedPosts = computed(() => posts.value)
 })
 
 const totalPages = computed(() => platformStore.pagination?.last_page || 1)
+
+  const deletePost = async (postId) => {
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to recover this post!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      })
+      if (result.isConfirmed) {
+          try {
+            await home.deletePost(postId)
+            await Swal.fire({
+              icon: 'success',
+              title: 'Post deleted successfully!',
+              showConfirmButton: false,
+              timer: 1500
+            })
+                  location.reload();
+
+          } catch (error) {
+            console.error('Failed to delete post:', error)
+            await Swal.fire({
+              icon: 'error',
+              title: 'Error deleting post',
+              text: error.message,
+            })
+          }
+        }
+    }
 
 function sortBy(key) {
   if (sortKey.value === key) sortOrder.value = -sortOrder.value

@@ -30,8 +30,8 @@
       </div>
 
       <div class="form-group">
-        <label for="image">Image Upload</label>
-        <input id="image" type="file" @change="handleImageUpload" accept="image/*" />
+        <label for="image_url">Image Upload</label>
+        <input id="image_url" type="file" @change="handleImageUpload" accept="image/*" />
         <div v-if="imagePreview" class="image-preview">
           <img :src="imagePreview" alt="Image Preview" />
         </div>
@@ -85,7 +85,7 @@ const router = useRouter()
 const form = ref({
   title: '',
   content: '',
-  image: null,
+  image_url: null,
   platform_ids: [],
   scheduled_time: '',
 })
@@ -118,10 +118,10 @@ const updateCharCount = () => {
 const handleImageUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
-    form.value.image = file
+    form.value.image_url = file
     imagePreview.value = URL.createObjectURL(file)
   } else {
-    form.value.image = null
+    form.value.image_url = null
     imagePreview.value = null
   }
 }
@@ -133,8 +133,8 @@ const handleSubmit = async () => {
     formData.append('title', form.value.title)
     formData.append('content', form.value.content)
     formData.append('scheduled_time', form.value.scheduled_time)
-    if (form.value.image) {
-      formData.append('image', form.value.image)
+    if (form.value.image_url) {
+      formData.append('image_url', form.value.image_url)
     }
 
     // Append platform_ids
@@ -233,3 +233,10 @@ button {
   border-radius: 6px;
 }
 </style>
+
+
+
+
+
+
+

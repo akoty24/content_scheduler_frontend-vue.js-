@@ -130,7 +130,7 @@ export default {
 
     // قيم Pagination
     const currentPage = ref(1)
-    const perPage = ref(20)
+    const perPage = ref(5)
     const totalPages = computed(() => home.pagination?.last_page || 1)
 
     const selectedStatus = ref('')
@@ -248,6 +248,8 @@ if (perPage.value) payload.per_page = perPage.value
               showConfirmButton: false,
               timer: 1500
             })
+                  location.reload();
+
           } catch (error) {
             console.error('Failed to delete post:', error)
             await Swal.fire({
